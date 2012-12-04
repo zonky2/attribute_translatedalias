@@ -23,3 +23,12 @@ CREATE TABLE `tl_metamodel_translatedtext` (
   KEY `attlang` (`att_id`, `langcode`),
   KEY `attitem` (`att_id`, `item_id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Table `tl_metamodel_attribute`
+--
+
+CREATE TABLE `tl_metamodel_attribute` (
+  `talias_fields` blob NULL,
+  `force_talias` char(1) NOT NULL default '',
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

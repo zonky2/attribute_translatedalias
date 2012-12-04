@@ -18,10 +18,10 @@ if (!defined('TL_ROOT'))
 	die('You cannot access this file directly!');
 }
 
-$GLOBALS['METAMODELS']['attributes']['translatedtext'] = array
+$GLOBALS['METAMODELS']['attributes']['translatedalias'] = array
 (
-	'class' => 'MetaModelAttributeTranslatedText',
-	'image' => 'system/modules/metamodelsattribute_text/html/text.gif'
+	'class' => 'MetaModelAttributeTranslatedAlias',
+	'image' => 'system/modules/metamodelsattribute_translatedalias/html/alias.gif'
 );
 
 ?>
