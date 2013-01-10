@@ -37,8 +37,8 @@ extends MetaModelAttributeTranslatedReference
 	{
 		return array_merge(parent::getAttributeSettingNames(), array('talias_fields', 'isunique', 'force_talias'));
 	}
-	
-	public function getFieldDefinition()
+
+	public function getFieldDefinition($arrOverrides = array())
 	{
 		$arrFieldDef = parent::getFieldDefinition();
 
@@ -51,7 +51,7 @@ extends MetaModelAttributeTranslatedReference
 		}
 		return $arrFieldDef;
 	}
-	
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -76,15 +76,15 @@ extends MetaModelAttributeTranslatedReference
 		// we need to fetch the attribute values for all attribs in the alias_fields and update the database and the model accordingly.
 		if ($this->get('isunique') && $this->searchFor($strAlias))
 		{
-			
-			
+
+
 			$intCount = 1;
 			// ensure uniqueness.
 			while (count($this->searchFor($strAlias . '-' . (++$intCount))) > 0){}
 			$strAlias = $strAlias . '-' . $intCount;
 		}
-		
-		
+
+
 
 		$this->setDataFor(array($objItem->get('id') => $strAlias));
 		$objItem->set($this->getColName(), $strAlias);
