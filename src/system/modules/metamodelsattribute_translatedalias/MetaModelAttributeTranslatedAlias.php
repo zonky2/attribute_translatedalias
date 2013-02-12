@@ -63,7 +63,7 @@ extends MetaModelAttributeTranslatedReference
 			return;
 		}
 
-		$arrAlias = '';
+		$arrAlias = array();
 		foreach (deserialize($this->get('talias_fields')) as $strAttribute)
 		{
 			$arrValues = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
@@ -76,18 +76,19 @@ extends MetaModelAttributeTranslatedReference
 		// we need to fetch the attribute values for all attribs in the alias_fields and update the database and the model accordingly.
 		if ($this->get('isunique') && $this->searchFor($strAlias))
 		{
-
-
 			$intCount = 1;
 			// ensure uniqueness.
 			while (count($this->searchFor($strAlias . '-' . (++$intCount))) > 0){}
 			$strAlias = $strAlias . '-' . $intCount;
 		}
 
+		$arrData = $this->widgetToValue($strAlias, $objItem->get('id'));
 
-
-		$this->setDataFor(array($objItem->get('id') => $strAlias));
-		$objItem->set($this->getColName(), $strAlias);
+		$this->setTranslatedDataFor(array
+		(
+			$objItem->get('id') => $arrData
+		), $this->getMetaModel()->getActiveLanguage());
+		$objItem->set($this->getColName(), $arrData);
 	}
 }
 
