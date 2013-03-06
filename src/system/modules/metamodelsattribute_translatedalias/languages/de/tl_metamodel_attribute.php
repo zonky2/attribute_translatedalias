@@ -10,9 +10,13 @@
  * @package     MetaModels
  * @subpackage  AttributeTranslatedAlias
  * @author      Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author      Andreas Isaak <info@andreas-isaak.de>
  * @copyright   The MetaModels team.
  * @license     LGPL.
  * @filesource
  */
 
-$GLOBALS['TL_DCA']['tl_metamodel_rendersetting']['metapalettes']['translatedalias extends default'] = array();
+/**
+ * Fields
+ */
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['translatedalias']    = 'Übersetzbarer Alias';
