@@ -53,8 +53,9 @@ class MetaModelAttributeTranslatedAlias extends MetaModelAttributeTranslatedRefe
 	 */
 	public function modelSaved($objItem)
 	{
+		$arrValue = $objItem->get($this->getColName());
 		// alias already defined and no update forced, get out!
-		if ($objItem->get($this->getColName()) && (!$this->get('force_talias')))
+		if ($arrValue && !empty($arrValue['value']) && (!$this->get('force_talias')))
 		{
 			return;
 		}
