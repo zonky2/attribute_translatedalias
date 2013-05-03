@@ -31,7 +31,7 @@ class MetaModelAttributeTranslatedAlias extends MetaModelAttributeTranslatedRefe
 
 	public function getAttributeSettingNames()
 	{
-		return array_merge(parent::getAttributeSettingNames(), array('talias_fields', 'isunique', 'force_talias'));
+		return array_merge(parent::getAttributeSettingNames(), array('talias_fields', 'isunique', 'force_talias', 'alwaysSave'));
 	}
 
 	public function getFieldDefinition($arrOverrides = array())
