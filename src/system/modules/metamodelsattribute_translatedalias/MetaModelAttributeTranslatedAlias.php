@@ -79,11 +79,11 @@ class MetaModelAttributeTranslatedAlias extends MetaModelAttributeTranslatedRefe
 
 		$strLanguage = $this->getMetaModel()->getActiveLanguage();
 		// we need to fetch the attribute values for all attribs in the alias_fields and update the database and the model accordingly.
-		if ($this->get('isunique') && $this->searchForInLanguages($strAlias, $strLanguage))
+		if ($this->get('isunique') && $this->searchForInLanguages($strAlias, array($strLanguage)))
 		{
 			$intCount = 1;
 			// ensure uniqueness.
-			while (count($this->searchForInLanguages($strAlias . '-' . (++$intCount), $strLanguage)) > 0){}
+			while (count($this->searchForInLanguages($strAlias . '-' . (++$intCount), array($strLanguage))) > 0){}
 			$strAlias = $strAlias . '-' . $intCount;
 		}
 
