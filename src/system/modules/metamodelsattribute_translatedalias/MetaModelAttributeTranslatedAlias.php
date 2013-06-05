@@ -74,8 +74,12 @@ class MetaModelAttributeTranslatedAlias extends MetaModelAttributeTranslatedRefe
 			$arrAlias[] = $arrValues['text'];
 		}
 
-		// implode with '-'
-		$strAlias  = standardize(implode('-', $arrAlias));
+		// Implode with '-', replace inserttags and strip HTML elements.
+		$strAlias  = standardize(
+			strip_tags(
+				MetaModelController::getInstance()->replaceInsertTags(implode('-', $arrAlias))
+			)
+		);
 
 		$strLanguage = $this->getMetaModel()->getActiveLanguage();
 		// we need to fetch the attribute values for all attribs in the alias_fields and update the database and the model accordingly.
