@@ -15,6 +15,10 @@
  * @filesource
  */
 
+namespace MetaModels\Dca;
+
+use MetaModels\Factory;
+
 /**
  * This class is used from DCA tl_metamodel_attribute for various callbacks.
  *
@@ -22,7 +26,7 @@
  * @subpackage AttributeTranslatedAlias
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  */
-class TableMetaModelsAttributeTranslatedAlias extends TableMetaModel
+class AttributeTranslatedAlias
 {
 
 	/**
@@ -32,15 +36,15 @@ class TableMetaModelsAttributeTranslatedAlias extends TableMetaModel
 	 * @return array
 	 */
 	public function getAllAttributes()
-	{				
-		$intID = $this->Input->get('id');
-		$intPID = $this->Input->get('pid');
+	{
+		$intID = \Input::getInstance()->get('id');
+		$intPID = \Input::getInstance()->get('pid');
 
 		$arrReturn = array();
 
 		if (empty($intPID))
 		{
-			$objResult = $this->Database
+			$objResult = \Database::getInstance()
 				->prepare('SELECT pid FROM tl_metamodel_attribute WHERE id=?')
 				->limit(1)
 				->execute($intID);
@@ -49,18 +53,18 @@ class TableMetaModelsAttributeTranslatedAlias extends TableMetaModel
 			{
 				return $arrReturn;
 			}
-			$objMetaModel = MetaModelFactory::byId($objResult->pid);
-		} else {
-			$objMetaModel = MetaModelFactory::byId($intPID);
+			$objMetaModel = Factory::byId($objResult->pid);
+		}
+		else
+		{
+			$objMetaModel = Factory::byId($intPID);
 		}
 
 		foreach ($objMetaModel->getAttributes() as $objAttribute)
 		{
 			$arrReturn[$objAttribute->getColName()] = $objAttribute->getName();
 		}
-		
+
 		return $arrReturn;
 	}
 }
-
-?>

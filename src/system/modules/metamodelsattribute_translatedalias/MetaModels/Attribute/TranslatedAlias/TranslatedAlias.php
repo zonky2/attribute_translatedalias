@@ -15,25 +15,39 @@
  * @filesource
  */
 
+namespace MetaModels\Attribute\TranslatedAlias;
+
+use MetaModels\Attribute\TranslatedReference;
+use MetaModels\Helper\ContaoController;
+
 /**
  * This is the MetaModelAttribute class for handling translated text fields.
  *
- * @package	   MetaModels
+ * @package    MetaModels
  * @subpackage AttributeTranslatedAlias
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  */
-class MetaModelAttributeTranslatedAlias extends MetaModelAttributeTranslatedReference
+class TranslatedAlias extends TranslatedReference
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	protected function getValueTable()
 	{
 		return 'tl_metamodel_translatedtext';
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getAttributeSettingNames()
 	{
 		return array_merge(parent::getAttributeSettingNames(), array('talias_fields', 'isunique', 'force_talias', 'alwaysSave'));
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getFieldDefinition($arrOverrides = array())
 	{
 		$arrFieldDef = parent::getFieldDefinition($arrOverrides);
@@ -45,13 +59,13 @@ class MetaModelAttributeTranslatedAlias extends MetaModelAttributeTranslatedRefe
 		{
 			$arrFieldDef['eval']['mandatory'] = false;
 		}
-		
+
 		// If "force_alias" is ture set alwaysSave to true.
 		if ($this->get('force_alias'))
 		{
 			$arrFieldDef['eval']['alwaysSave'] = true;
 		}
-		
+
 		return $arrFieldDef;
 	}
 
@@ -77,7 +91,7 @@ class MetaModelAttributeTranslatedAlias extends MetaModelAttributeTranslatedRefe
 		// Implode with '-', replace inserttags and strip HTML elements.
 		$strAlias  = standardize(
 			strip_tags(
-				MetaModelController::getInstance()->replaceInsertTags(implode('-', $arrAlias))
+				ContaoController::getInstance()->replaceInsertTags(implode('-', $arrAlias))
 			)
 		);
 
