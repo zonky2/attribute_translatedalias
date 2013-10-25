@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['translatedalias ex
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['talias_fields'] = array
 (
-	'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['talias_fields'],
+	'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields'],
 	'exclude'                 => true,
 	'inputType'               => 'multiColumnWizard',
 	'eval'                    => array

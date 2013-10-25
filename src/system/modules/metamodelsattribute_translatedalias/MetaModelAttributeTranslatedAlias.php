@@ -74,17 +74,25 @@ class MetaModelAttributeTranslatedAlias extends MetaModelAttributeTranslatedRefe
 			$arrAlias[] = $arrValues['text'];
 		}
 
-		// implode with '-'
-		$strAlias  = standardize(implode('-', $arrAlias));
+		// Implode with '-', replace inserttags and strip HTML elements.
+		$strAlias  = standardize(
+			strip_tags(
+				MetaModelController::getInstance()->replaceInsertTags(implode('-', $arrAlias))
+			)
+		);
 
-		$strLanguage = $this->getMetaModel()->getActiveLanguage();
 		// we need to fetch the attribute values for all attribs in the alias_fields and update the database and the model accordingly.
-		if ($this->get('isunique') && $this->searchForInLanguages($strAlias, array($strLanguage)))
+		if ($this->get('isunique'))
 		{
-			$intCount = 1;
 			// ensure uniqueness.
-			while (count($this->searchForInLanguages($strAlias . '-' . (++$intCount), array($strLanguage))) > 0){}
-			$strAlias = $strAlias . '-' . $intCount;
+			$strLanguage  = $this->getMetaModel()->getActiveLanguage();
+			$strBaseAlias = $strAlias;
+			$arrIds       = array($objItem->get('id'));
+			$intCount     = 2;
+			while(array_diff($this->searchForInLanguages($strAlias, array($strLanguage)), $arrIds))
+			{
+				$strAlias = $strBaseAlias . '-' . $intCount++;
+			}
 		}
 
 		$arrData = $this->widgetToValue($strAlias, $objItem->get('id'));
