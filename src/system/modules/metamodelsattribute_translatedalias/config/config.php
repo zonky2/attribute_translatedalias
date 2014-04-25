@@ -17,7 +17,3 @@
 
 $GLOBALS['METAMODELS']['attributes']['translatedalias']['class'] = 'MetaModels\Attribute\TranslatedAlias\TranslatedAlias';
 $GLOBALS['METAMODELS']['attributes']['translatedalias']['image'] = 'system/modules/metamodelsattribute_translatedalias/html/alias.png';
-
-// non composerized Contao 2.X autoload support.
-$GLOBALS['MM_AUTOLOAD'][] = dirname(__DIR__);
-$GLOBALS['MM_AUTOLOAD'][] = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'deprecated';
