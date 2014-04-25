@@ -58,6 +58,6 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_talias'] = array
 	'inputType'               => 'checkbox',
 	'eval'                    => array
 	(
-		'tl_class'=>'cbx w50'
+		'tl_class' => 'cbx w50'
 	),
 );

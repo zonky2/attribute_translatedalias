@@ -15,5 +15,7 @@
  * @filesource
  */
 
-$GLOBALS['METAMODELS']['attributes']['translatedalias']['class'] = 'MetaModels\Attribute\TranslatedAlias\TranslatedAlias';
-$GLOBALS['METAMODELS']['attributes']['translatedalias']['image'] = 'system/modules/metamodelsattribute_translatedalias/html/alias.png';
+$GLOBALS['METAMODELS']['attributes']['translatedalias']['class'] =
+	'MetaModels\Attribute\TranslatedAlias\TranslatedAlias';
+$GLOBALS['METAMODELS']['attributes']['translatedalias']['image'] =
+	'system/modules/metamodelsattribute_translatedalias/html/alias.png';

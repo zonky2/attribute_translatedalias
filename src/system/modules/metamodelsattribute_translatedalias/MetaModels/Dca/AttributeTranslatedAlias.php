@@ -31,18 +31,19 @@ class AttributeTranslatedAlias
 
 	/**
 	 * Fetch all attributes from the parenting MetaModel. Called as options_callback.
-	 * User the oncreate_callback.
+	 *
+	 * Used in the oncreate_callback.
 	 *
 	 * @return array
 	 */
 	public function getAllAttributes()
 	{
-		$intID = \Input::getInstance()->get('id');
-		$intPID = \Input::getInstance()->get('pid');
+		$intID  = \Input::getInstance()->get('id');
+		$intPid = \Input::getInstance()->get('pid');
 
 		$arrReturn = array();
 
-		if (empty($intPID))
+		if (empty($intPid))
 		{
 			$objResult = \Database::getInstance()
 				->prepare('SELECT pid FROM tl_metamodel_attribute WHERE id=?')
@@ -57,7 +58,7 @@ class AttributeTranslatedAlias
 		}
 		else
 		{
-			$objMetaModel = Factory::byId($intPID);
+			$objMetaModel = Factory::byId($intPid);
 		}
 
 		foreach ($objMetaModel->getAttributes() as $objAttribute)

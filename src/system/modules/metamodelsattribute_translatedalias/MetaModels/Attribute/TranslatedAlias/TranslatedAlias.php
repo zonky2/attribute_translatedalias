@@ -42,7 +42,15 @@ class TranslatedAlias extends TranslatedReference
 	 */
 	public function getAttributeSettingNames()
 	{
-		return array_merge(parent::getAttributeSettingNames(), array('talias_fields', 'isunique', 'force_talias', 'alwaysSave'));
+		return array_merge(
+			parent::getAttributeSettingNames(),
+			array(
+				'talias_fields',
+				'isunique',
+				'force_talias',
+				'alwaysSave'
+			)
+		);
 	}
 
 	/**
@@ -54,7 +62,7 @@ class TranslatedAlias extends TranslatedReference
 
 		$arrFieldDef['inputType'] = 'text';
 
-		// we do not need to set mandatory, as we will automatically update our value when isunique is given.
+		// We do not need to set mandatory, as we will automatically update our value when isunique is given.
 		if ($this->get('isunique'))
 		{
 			$arrFieldDef['eval']['mandatory'] = false;
@@ -75,7 +83,7 @@ class TranslatedAlias extends TranslatedReference
 	public function modelSaved($objItem)
 	{
 		$arrValue = $objItem->get($this->getColName());
-		// alias already defined and no update forced, get out!
+		// Alias already defined and no update forced, get out!
 		if ($arrValue && !empty($arrValue['value']) && (!$this->get('force_talias')))
 		{
 			return;
@@ -84,28 +92,29 @@ class TranslatedAlias extends TranslatedReference
 		$arrAlias = array();
 		foreach (deserialize($this->get('talias_fields')) as $strAttribute)
 		{
-			$arrValues = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
+			$arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
 			$arrAlias[] = $arrValues['text'];
 		}
 
 		// Implode with '-', replace inserttags and strip HTML elements.
-		$strAlias  = standardize(
+		$strAlias = standardize(
 			strip_tags(
 				ContaoController::getInstance()->replaceInsertTags(implode('-', $arrAlias))
 			)
 		);
 
-		// we need to fetch the attribute values for all attribs in the alias_fields and update the database and the model accordingly.
+		// We need to fetch the attribute values for all attributes in the alias_fields and update the database
+		// and the model accordingly.
 		if ($this->get('isunique'))
 		{
-			// ensure uniqueness.
+			// Ensure uniqueness.
 			$strLanguage  = $this->getMetaModel()->getActiveLanguage();
 			$strBaseAlias = $strAlias;
 			$arrIds       = array($objItem->get('id'));
 			$intCount     = 2;
-			while(array_diff($this->searchForInLanguages($strAlias, array($strLanguage)), $arrIds))
+			while (array_diff($this->searchForInLanguages($strAlias, array($strLanguage)), $arrIds))
 			{
-				$strAlias = $strBaseAlias . '-' . $intCount++;
+				$strAlias = $strBaseAlias . '-' . ($intCount++);
 			}
 		}
 
