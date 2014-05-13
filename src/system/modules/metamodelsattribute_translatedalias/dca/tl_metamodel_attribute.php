@@ -40,13 +40,11 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['talias_fields'] = array
 				'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
 				'exclude'               => true,
 				'inputType'             => 'select',
-				// FIXME: change to event based approach.
-				'options_callback'      => array('MetaModels\Dca\AttributeTranslatedAlias','getAllAttributes'),
-					'eval' => array
-					(
+				'eval' => array
+				(
 					'style'             => 'width:600px',
 					'chosen'            => 'true'
-					)
+				)
 			),
 		),
 	),
