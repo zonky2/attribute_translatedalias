@@ -17,8 +17,9 @@
 
 namespace MetaModels\Attribute\TranslatedAlias;
 
+use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
+use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsEvent;
 use MetaModels\Attribute\TranslatedReference;
-use MetaModels\Helper\ContaoController;
 
 /**
  * This is the MetaModelAttribute class for handling translated text fields.
@@ -77,6 +78,9 @@ class TranslatedAlias extends TranslatedReference
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     public function modelSaved($objItem)
     {
@@ -92,12 +96,13 @@ class TranslatedAlias extends TranslatedReference
             $arrAlias[] = $arrValues['text'];
         }
 
+        /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher */
+        $dispatcher   = $GLOBALS['container']['event-dispatcher'];
+        $replaceEvent = new ReplaceInsertTagsEvent(implode('-', $arrAlias));
+        $dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
+
         // Implode with '-', replace inserttags and strip HTML elements.
-        $strAlias = standardize(
-            strip_tags(
-                ContaoController::getInstance()->replaceInsertTags(implode('-', $arrAlias))
-            )
-        );
+        $strAlias = standardize(strip_tags($replaceEvent->getBuffer()));
 
         // We need to fetch the attribute values for all attributes in the alias_fields and update the database
         // and the model accordingly.
