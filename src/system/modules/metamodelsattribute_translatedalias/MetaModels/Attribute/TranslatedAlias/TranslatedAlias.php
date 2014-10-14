@@ -63,14 +63,12 @@ class TranslatedAlias extends TranslatedReference
         $arrFieldDef['inputType'] = 'text';
 
         // We do not need to set mandatory, as we will automatically update our value when isunique is given.
-        if ($this->get('isunique'))
-        {
+        if ($this->get('isunique')) {
             $arrFieldDef['eval']['mandatory'] = false;
         }
 
         // If "force_alias" is ture set alwaysSave to true.
-        if ($this->get('force_alias'))
-        {
+        if ($this->get('force_alias')) {
             $arrFieldDef['eval']['alwaysSave'] = true;
         }
 
@@ -84,14 +82,12 @@ class TranslatedAlias extends TranslatedReference
     {
         $arrValue = $objItem->get($this->getColName());
         // Alias already defined and no update forced, get out!
-        if ($arrValue && !empty($arrValue['value']) && (!$this->get('force_talias')))
-        {
+        if ($arrValue && !empty($arrValue['value']) && (!$this->get('force_talias'))) {
             return;
         }
 
         $arrAlias = array();
-        foreach (deserialize($this->get('talias_fields')) as $strAttribute)
-        {
+        foreach (deserialize($this->get('talias_fields')) as $strAttribute) {
             $arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
             $arrAlias[] = $arrValues['text'];
         }
@@ -105,25 +101,26 @@ class TranslatedAlias extends TranslatedReference
 
         // We need to fetch the attribute values for all attributes in the alias_fields and update the database
         // and the model accordingly.
-        if ($this->get('isunique'))
-        {
+        if ($this->get('isunique')) {
             // Ensure uniqueness.
             $strLanguage  = $this->getMetaModel()->getActiveLanguage();
             $strBaseAlias = $strAlias;
             $arrIds       = array($objItem->get('id'));
             $intCount     = 2;
-            while (array_diff($this->searchForInLanguages($strAlias, array($strLanguage)), $arrIds))
-            {
+            while (array_diff($this->searchForInLanguages($strAlias, array($strLanguage)), $arrIds)) {
                 $strAlias = $strBaseAlias . '-' . ($intCount++);
             }
         }
 
         $arrData = $this->widgetToValue($strAlias, $objItem->get('id'));
 
-        $this->setTranslatedDataFor(array
-        (
-            $objItem->get('id') => $arrData
-        ), $this->getMetaModel()->getActiveLanguage());
+        $this->setTranslatedDataFor(
+            array
+            (
+                $objItem->get('id') => $arrData
+            ),
+            $this->getMetaModel()->getActiveLanguage()
+        );
         $objItem->set($this->getColName(), $arrData);
     }
 }

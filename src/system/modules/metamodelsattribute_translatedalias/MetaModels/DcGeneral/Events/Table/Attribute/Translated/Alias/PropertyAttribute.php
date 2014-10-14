@@ -18,15 +18,13 @@ namespace MetaModels\DcGeneral\Events\Table\Attribute\Translated\Alias;
 
 use ContaoCommunityAlliance\Contao\EventDispatcher\Event\CreateEventDispatcherEvent;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
-use ContaoCommunityAlliance\DcGeneral\Factory\Event\BuildDataDefinitionEvent;
 use MetaModels\DcGeneral\Events\BaseSubscriber;
 use MetaModels\Factory;
 
 /**
  * Handle events for tl_metamodel_attribute.alias_fields.attr_id.
  */
-class PropertyAttribute
-    extends BaseSubscriber
+class PropertyAttribute extends BaseSubscriber
 {
     /**
      * Register all listeners to handle creation of a data container.
@@ -48,15 +46,12 @@ class PropertyAttribute
     /**
      * Register the events for table tl_metamodel_attribute.
      *
-     * @param BuildDataDefinitionEvent $event The event being processed.
-     *
      * @return void
      */
-    public static function registerTableMetaModelAttributeEvents(BuildDataDefinitionEvent $event)
+    public static function registerTableMetaModelAttributeEvents()
     {
         static $registered;
-        if ($registered)
-        {
+        if ($registered) {
             return;
         }
         $registered = true;
@@ -76,25 +71,21 @@ class PropertyAttribute
         if (($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_attribute')
             || ($model->getProperty('type') !== 'translatedalias')
             || ($event->getPropertyName() !== 'field_attribute')
-        )
-        {
+        ) {
             return;
         }
 
         $metaModel = Factory::byId($model->getProperty('pid'));
 
-        if (!$metaModel)
-        {
+        if (!$metaModel) {
             return;
         }
 
         $result = array();
 
         // Fetch all attributes except for the current attribute.
-        foreach ($metaModel->getAttributes() as $attribute)
-        {
-            if ($attribute->get('id') === $model->getId())
-            {
+        foreach ($metaModel->getAttributes() as $attribute) {
+            if ($attribute->get('id') === $model->getId()) {
                 continue;
             }
 

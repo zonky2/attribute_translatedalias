@@ -18,4 +18,4 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['translatedalias']    = 'Translated alias';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['translatedalias'] = 'Translated alias';
