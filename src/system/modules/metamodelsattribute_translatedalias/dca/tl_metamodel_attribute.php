@@ -21,42 +21,42 @@
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['translatedalias extends _complexattribute_'] = array
 (
-	'+advanced' => array('force_talias'),
-	'+display'  => array('talias_fields after description')
+    '+advanced' => array('force_talias'),
+    '+display'  => array('talias_fields after description')
 );
 
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['talias_fields'] = array
 (
-	'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields'],
-	'exclude'                 => true,
-	'inputType'               => 'multiColumnWizard',
-	'eval'                    => array
-	(
-		'columnFields' => array
-		(
-			'field_attribute' => array
-			(
-				'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
-				'exclude'               => true,
-				'inputType'             => 'select',
-				'eval' => array
-				(
-					'style'             => 'width:600px',
-					'chosen'            => 'true'
-				)
-			),
-		),
-	),
+    'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields'],
+    'exclude'                 => true,
+    'inputType'               => 'multiColumnWizard',
+    'eval'                    => array
+    (
+        'columnFields' => array
+        (
+            'field_attribute' => array
+            (
+                'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
+                'exclude'               => true,
+                'inputType'             => 'select',
+                'eval' => array
+                (
+                    'style'             => 'width:600px',
+                    'chosen'            => 'true'
+                )
+            ),
+        ),
+    ),
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_talias'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'                    => array
-	(
-		'tl_class' => 'cbx w50'
-	),
+    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias'],
+    'exclude'                 => true,
+    'inputType'               => 'checkbox',
+    'eval'                    => array
+    (
+        'tl_class' => 'cbx w50'
+    ),
 );

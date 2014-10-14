@@ -21,5 +21,5 @@
  */
 TemplateLoader::addFiles(array
 (
-	'mm_attr_translatedalias'              => 'system/modules/metamodelsattribute_translatedalias/templates',
+    'mm_attr_translatedalias'              => 'system/modules/metamodelsattribute_translatedalias/templates',
 ));
