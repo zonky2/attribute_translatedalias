@@ -60,15 +60,7 @@ class PropertyAttribute
 			return;
 		}
 		$registered = true;
-		$dispatcher = $event->getDispatcher();
-
-		self::registerListeners(
-			array(
-				GetPropertyOptionsEvent::NAME => __CLASS__ . '::getOptions',
-			),
-			$dispatcher,
-			array('tl_metamodel_attribute', 'talias_fields', 'field_attribute')
-		);
+		self::registerListeners(array(GetPropertyOptionsEvent::NAME => __CLASS__ . '::getOptions'), func_get_arg(2));
 	}
 
 	/**
@@ -80,7 +72,15 @@ class PropertyAttribute
 	 */
 	public static function getOptions(GetPropertyOptionsEvent $event)
 	{
-		$model     = $event->getModel();
+		$model = $event->getModel();
+		if (($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_attribute')
+			|| ($model->getProperty('type') !== 'translatedalias')
+			|| ($event->getPropertyName() !== 'field_attribute')
+		)
+		{
+			return;
+		}
+
 		$metaModel = Factory::byId($model->getProperty('pid'));
 
 		if (!$metaModel)
