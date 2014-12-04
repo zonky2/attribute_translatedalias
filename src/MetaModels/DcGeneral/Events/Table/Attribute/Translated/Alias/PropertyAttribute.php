@@ -17,7 +17,8 @@
 namespace MetaModels\DcGeneral\Events\Table\Attribute\Translated\Alias;
 
 use ContaoCommunityAlliance\Contao\EventDispatcher\Event\CreateEventDispatcherEvent;
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
+use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\IdSerializer;
+use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
 use MetaModels\DcGeneral\Events\BaseSubscriber;
 use MetaModels\Factory;
 
@@ -55,27 +56,53 @@ class PropertyAttribute extends BaseSubscriber
             return;
         }
         $registered = true;
-        self::registerListeners(array(GetPropertyOptionsEvent::NAME => __CLASS__ . '::getOptions'), func_get_arg(2));
+        self::registerListeners(array(GetOptionsEvent::NAME => __CLASS__ . '::getOptions'), func_get_arg(2));
+    }
+
+    /**
+     * Check if the event is intended for us.
+     *
+     * @param GetOptionsEvent $event The event to test.
+     *
+     * @return bool
+     */
+    private static function isEventForMe(GetOptionsEvent $event)
+    {
+        $input = $event->getEnvironment()->getInputProvider();
+        $type  = $event->getModel()->getProperty('type');
+        if (empty($type) && $input->hasValue('type')) {
+            $type = $input->getValue('type');
+        }
+
+        return
+            ($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_attribute')
+            || ($type !== 'translatedalias')
+            || ($event->getPropertyName() !== 'talias_fields')
+            || ($event->getSubPropertyName() !== 'field_attribute');
     }
 
     /**
      * Retrieve the options for the attributes.
      *
-     * @param GetPropertyOptionsEvent $event The event.
+     * @param GetOptionsEvent $event The event.
      *
      * @return void
      */
-    public static function getOptions(GetPropertyOptionsEvent $event)
+    public static function getOptions(GetOptionsEvent $event)
     {
-        $model = $event->getModel();
-        if (($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_attribute')
-            || ($model->getProperty('type') !== 'translatedalias')
-            || ($event->getPropertyName() !== 'field_attribute')
-        ) {
+        if (self::isEventForMe($event)) {
             return;
         }
 
-        $metaModel = Factory::byId($model->getProperty('pid'));
+        $model       = $event->getModel();
+        $metaModelId = $model->getProperty('pid');
+        if (!$metaModelId) {
+            $metaModelId = IdSerializer::fromSerialized(
+                $event->getEnvironment()->getInputProvider()->getValue('pid')
+            )->getId();
+        }
+
+        $metaModel = Factory::byId($metaModelId);
 
         if (!$metaModel) {
             return;
