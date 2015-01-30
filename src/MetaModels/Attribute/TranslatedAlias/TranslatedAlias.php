@@ -80,9 +80,6 @@ class TranslatedAlias extends TranslatedReference
 
     /**
      * {@inheritdoc}
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     public function modelSaved($objItem)
     {
@@ -98,8 +95,7 @@ class TranslatedAlias extends TranslatedReference
             $arrAlias[] = $arrValues['text'];
         }
 
-        /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher */
-        $dispatcher   = $GLOBALS['container']['event-dispatcher'];
+        $dispatcher   = $this->getMetaModel()->getServiceContainer()->getEventDispatcher();
         $replaceEvent = new ReplaceInsertTagsEvent(implode('-', $arrAlias));
         $dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
 
