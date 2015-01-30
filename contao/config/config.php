@@ -17,11 +17,5 @@
  * @filesource
  */
 
-$GLOBALS['METAMODELS']['attributes']['translatedalias']['class'] =
-    'MetaModels\Attribute\TranslatedAlias\TranslatedAlias';
-
-$GLOBALS['METAMODELS']['attributes']['translatedalias']['image'] =
-    'system/modules/metamodelsattribute_translatedalias/html/alias.png';
-
 $GLOBALS['TL_EVENTS'][\ContaoCommunityAlliance\Contao\EventDispatcher\Event\CreateEventDispatcherEvent::NAME][] =
     'MetaModels\DcGeneral\Events\Table\Attribute\Translated\Alias\PropertyAttribute::registerEvents';
