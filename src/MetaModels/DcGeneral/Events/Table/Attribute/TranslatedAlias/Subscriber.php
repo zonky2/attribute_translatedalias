@@ -6,58 +6,36 @@
  * data in each collection.
  *
  * PHP version 5
+ *
  * @package    MetaModels
- * @subpackage Core
+ * @subpackage AttributeTranslatedAlias
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @copyright  The MetaModels team.
- * @license    LGPL.
+ * @license    LGPL-3+
  * @filesource
  */
 
-namespace MetaModels\DcGeneral\Events\Table\Attribute\Translated\Alias;
+namespace MetaModels\DcGeneral\Events\Table\Attribute\TranslatedAlias;
 
-use ContaoCommunityAlliance\Contao\EventDispatcher\Event\CreateEventDispatcherEvent;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\IdSerializer;
 use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
 use MetaModels\DcGeneral\Events\BaseSubscriber;
-use MetaModels\Factory;
 
 /**
  * Handle events for tl_metamodel_attribute.alias_fields.attr_id.
  */
-class PropertyAttribute extends BaseSubscriber
+class Subscriber extends BaseSubscriber
 {
     /**
-     * Register all listeners to handle creation of a data container.
-     *
-     * @param CreateEventDispatcherEvent $event The event.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public static function registerEvents(CreateEventDispatcherEvent $event)
+    protected function registerEventsInDispatcher()
     {
-        $dispatcher = $event->getEventDispatcher();
-        self::registerBuildDataDefinitionFor(
-            'tl_metamodel_attribute',
-            $dispatcher,
-            __CLASS__ . '::registerTableMetaModelAttributeEvents'
+        $this->addListener(
+            GetOptionsEvent::NAME,
+            array($this, 'getOptions')
         );
-    }
-
-    /**
-     * Register the events for table tl_metamodel_attribute.
-     *
-     * @return void
-     */
-    public static function registerTableMetaModelAttributeEvents()
-    {
-        static $registered;
-        if ($registered) {
-            return;
-        }
-        $registered = true;
-        self::registerListeners(array(GetOptionsEvent::NAME => __CLASS__ . '::getOptions'), func_get_arg(2));
     }
 
     /**
@@ -67,7 +45,7 @@ class PropertyAttribute extends BaseSubscriber
      *
      * @return bool
      */
-    private static function isEventForMe(GetOptionsEvent $event)
+    private function isEventForMe(GetOptionsEvent $event)
     {
         $input = $event->getEnvironment()->getInputProvider();
 
@@ -93,7 +71,7 @@ class PropertyAttribute extends BaseSubscriber
      *
      * @return void
      */
-    public static function getOptions(GetOptionsEvent $event)
+    public function getOptions(GetOptionsEvent $event)
     {
         if (self::isEventForMe($event)) {
             return;
@@ -107,7 +85,7 @@ class PropertyAttribute extends BaseSubscriber
             )->getId();
         }
 
-        $metaModel = Factory::byId($metaModelId);
+        $metaModel = $this->getMetaModelById($metaModelId);
 
         if (!$metaModel) {
             return;
