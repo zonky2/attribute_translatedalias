@@ -12,6 +12,7 @@
  * @author      Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author      Stefan Heimes <stefan_heimes@hotmail.com>
  * @author      Andreas Isaak <info@andreas-isaak.de>
+ * @author      Sven Baumann <baumann.sv@gmail.com>
  * @copyright   The MetaModels team.
  * @license     LGPL.
  * @filesource
@@ -21,6 +22,9 @@
  * Table tl_metamodel_attribute
  */
 
+/**
+ * Add palette configuration.
+ */
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['translatedalias extends _complexattribute_'] = array
 (
     '+advanced' => array('force_talias'),
@@ -28,6 +32,50 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['translatedalias ex
 );
 
 
+// Get all active modules for check if attribute_translatedtext is loaded.
+$activeModules = \Contao\ModuleLoader::getActive();
+
+/**
+ * Add data provider.
+ */
+if (!in_array('metamodelsattribute_translatedtext', $activeModules)) {
+    $GLOBALS['TL_DCA']['tl_metamodel_attribute']['dca_config']['data_provider']['tl_metamodel_translatedtext'] = array
+    (
+        'source' => 'tl_metamodel_translatedtext'
+    );
+}
+
+/**
+ * Add child condition.
+ */
+if (!in_array('metamodelsattribute_translatedtext', $activeModules)) {
+    $GLOBALS['TL_DCA']['tl_metamodel_attribute']['dca_config']['childCondition'][] = array
+    (
+        'from'   => 'tl_metamodel_attribute',
+        'to'     => 'tl_metamodel_translatedtext',
+        'setOn'  => array
+        (
+            array
+            (
+                'to_field'   => 'att_id',
+                'from_field' => 'id',
+            ),
+        ),
+        'filter' => array
+        (
+            array
+            (
+                'local'     => 'att_id',
+                'remote'    => 'id',
+                'operation' => '=',
+            ),
+        )
+    );
+}
+
+/**
+ * Add field configuration.
+ */
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['talias_fields'] = array
 (
     'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields'],
